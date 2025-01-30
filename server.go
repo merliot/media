@@ -12,10 +12,9 @@ import (
 
 type metrics struct {
 	sync.RWMutex
-	hits       map[string]int
-	misses     int
-	clientIPs  map[string]int
-	maxPathLen int
+	hits      map[string]int
+	misses    int
+	clientIPs map[string]int
 }
 
 func newMetrics() *metrics {
@@ -29,9 +28,6 @@ func (m *metrics) hit(path string) {
 	m.Lock()
 	defer m.Unlock()
 	m.hits[path]++
-	if len(path) > m.maxPathLen {
-		m.maxPathLen = len(path)
-	}
 
 }
 
@@ -62,7 +58,7 @@ func (m *metrics) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hits:\n\n")
 	for _, path := range paths {
 		count := m.hits[path]
-		fmt.Fprintf(w, "  %-*s     %d\n", m.maxPathLen, path, count)
+		fmt.Fprintf(w, "  %-40s     %d\n", path, count)
 	}
 
 	ips := make([]string, 0, len(m.clientIPs))
