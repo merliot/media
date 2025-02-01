@@ -2,7 +2,7 @@ module github.com/merliot/media
 
 go 1.23.4
 
-require github.com/merliot/hub v0.0.75
+require github.com/merliot/hub v0.0.76
 
 require (
 	github.com/juju/ratelimit v1.0.2 // indirect
